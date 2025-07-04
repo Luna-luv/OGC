@@ -51,6 +51,7 @@ infeasibility = {}
   - current port is p, total ports are P, o is the origin port, d is the destination port
   - if current port p is between o and d, we consider it remaining on board.
 
+## def bfs
 ```python
 def bfs(G, node_allocations, root=0):
     root = 0
@@ -82,6 +83,7 @@ def bfs(G, node_allocations, root=0):
   - which new nodes became reachable and are still free
   - how many edges away from the root each of them sits(distance)
 
+## def get_available_nodes(node_allocations)
 ```python
 def get_available_nodes(node_allocations):
     return [n for n,alloc in enumerate(node_allocations) if alloc == -1][1:] # # Excluding the gate node
@@ -90,6 +92,7 @@ def get_available_nodes(node_allocations):
 - return : flat list of all free nodes excluding gate node.
 - usage : can simply find which node is free
 
+## def dijkstra(G, node_allocations=None, start=0)
 ```python
 def dijkstra(G, node_allocations=None, start=0):  
     distances = {node: float('inf') for node in G}
@@ -115,4 +118,32 @@ def dijkstra(G, node_allocations=None, start=0):
                     heapq.heappush(priority_queue, (distance, neighbor))
 
     return distances, previous_nodes
+```
+- function; **how does Dijkstra(or BFS) figure out which paths are actually usuable, given some nodes are blocked?**
+>```
+>if node_allocations is None or node_allocations[neighbor] == -1
+>```
+>Before stepping to neighbor nodes, this code functions. It simply never enqueues the node that's occupied(just becomes a wall we can't pass through).
+
+## difference between BFS and Dijkstra
+| 항목         | BFS                           | Dijkstra                  |
+| ---------- | ----------------------------- | ------------------------- |
+| **핵심 구조**  | FIFO 큐                        | 최소 힙 (priority queue)     |
+| **시간 복잡도** | $O(N+E)$                      | $O((N+E)\log N)$          |
+| **코드 분량**  | 간단 (큐·방문 체크만)                 | 힙·거리 테이블·이전 노드 테이블 필요     |
+| **방문 순서**  | “거리 1 → 거리 2 → …” 레이어별 탐색     | 거리 오름차순 순차 탐색             |
+| **추가 메모리** | 방문 집합(`visited`)              | 거리(`distances`), 이전 노드, 힙 |
+| **확장성**    | 가중치 없는 그래프 전용                 | 가중치, 휴리스틱(A\*) 확장 용이      |
+| **주요 용도**  | 단순 도달성, k-단계 노드 검색, 이분 그래프 검사 | 일반 최단 경로, 가중치/휴리스틱 적용     |
+
+## def path_backtracking(previous_nodes, start, target)
+```python
+def path_backtracking(previous_nodes, start, target):
+    path = []
+    current_node = target
+    while current_node is not None:
+        path.append(current_node)
+        current_node = previous_nodes[current_node]
+    path.reverse()  
+    return path
 ```
