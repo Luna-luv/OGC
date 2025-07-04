@@ -35,4 +35,18 @@ node_allocations = np.ones(N, dtype=int)*-1
 ```
 - np.ones : NumPy funcition that creates a new array filled with '1'.
 - '-1' : not must, -1 can be replaced to any number, but in this case '-1' to indicate the empty node.
-- 
+
+```python
+supposedly_loaded_demands_after_ports = {}
+for p in range(P):
+  supposedly_loaded_demands_after_ports[p] = {}
+  for k, ((o, d), r) in enumerate(K):
+    if o <= p < d:
+      supposedly_loaded_demands_after_ports[p][k] = r
+obj = 0
+infeasibility = {}
+```
+- supposedly_loaded_demands_after_ports = {} : preparing a place to store “which demands are on board when leaving each port”
+- loop
+  - current port is p, total ports are P, o is the origin port, d is the destination port
+  - if current port p is between o and d, we consider it remaining on board.
