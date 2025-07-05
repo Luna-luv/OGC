@@ -147,3 +147,7 @@ def path_backtracking(previous_nodes, start, target):
     path.reverse()  
     return path
 ```
+- purpose : return **path**
+- for clarity, we split dijkstra(or bfs) and path_batracking each
+- 
+- 
