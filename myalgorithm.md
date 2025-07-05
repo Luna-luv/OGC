@@ -110,6 +110,7 @@
             assert(len(flattened_K_load) == len(loading_nodes))
 ```
 - `lambda` & `reverse=True` : sort the destination and perform the process of descending
+  ```python
             # Get the shortest path to the node from the gate
             distances, previous_nodes = util.dijkstra(G, node_allocations)
 
@@ -125,3 +126,6 @@
 
         return route_list, node_allocations
 ```
+✅ loading heuristic is about loading new car + loading unloaded car with the issue of blocking.
+✅ we find the rehandling demands by comparing reachable nodes and avialable nodes. To put all demands in our cargo, we need to make total reachable nodes larger than total loading demands from port P.
+✅ By descending the length toward destination of demands, we can load more effectively; The farther, the deeper.
