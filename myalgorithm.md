@@ -23,6 +23,7 @@
         total_loading_demands = sum([r for k,r in K_load.items()])
 ```
 - total loading demands = origin loading demands + rehandling demands
+```python
         # Get reachable nodes from the gate
         reachable_nodes, reachable_node_distances = util.bfs(G, node_allocations)
 
@@ -43,6 +44,10 @@
             # 2-2. Get the shortest path to the node from the gate
             # 2-3. Roll-off demands occupied on the path by order of distance from the gate. (and push to rehandling_demands stack for the later reloading)
             # 2-4. Check if the number of reachable nodes is enough to load the demand
+  ```
+  💡simple idea of baseline loading heuristic
+  - just unload every car which is blocking the route and reload them again.
+  ```python
             available_but_not_reachable = [n for n in available_nodes if n not in reachable_nodes]
 
             while len(reachable_nodes) < total_loading_demands:
@@ -86,7 +91,8 @@
                 K_load[k] = 1
 
         print(f'total_loading_demands = {total_loading_demands}')
-
+```
+```python
         if total_loading_demands > 0:
 
             # We take the fartest nodes from the gate to load the demands
@@ -102,7 +108,8 @@
                     flattened_K_load.append(k)
 
             assert(len(flattened_K_load) == len(loading_nodes))
-
+```
+- `lambda` & `reverse=True` : sort the destination and perform the process of descending
             # Get the shortest path to the node from the gate
             distances, previous_nodes = util.dijkstra(G, node_allocations)
 
